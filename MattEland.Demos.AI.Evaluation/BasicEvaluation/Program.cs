@@ -1,4 +1,4 @@
-﻿using System.ClientModel;
+using System.ClientModel;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.AI.Evaluation;
 using Microsoft.Extensions.AI.Evaluation.Quality;
