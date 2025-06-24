@@ -1,11 +1,4 @@
-using System.ClientModel;
-using Microsoft.Extensions.AI;
-using Microsoft.Extensions.AI.Evaluation;
-using Microsoft.Extensions.AI.Evaluation.Quality;
-using Microsoft.Extensions.Configuration;
-using OpenAI;
-using Spectre.Console;
-using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
+using BasicEvaluation;
 
 #pragma warning disable AIEVAL001
 
@@ -78,27 +71,4 @@ List<EvaluationContext> context = [
 // Evaluate the response
 ChatConfiguration chatConfig = new(chatClient);
 EvaluationResult evalResult = await evaluator.EvaluateAsync(messages, responses, chatConfig, context);
-
-// Display the evaluation results
-Table table = new Table().Title("Evaluation Results");
-table.AddColumns("Metric", "Value", "Reason");
-foreach (var kvp in evalResult.Metrics)
-{
-	EvaluationMetric metric = kvp.Value;
-	string reason = metric.Reason ?? "No Reason Provided";
-	string value = metric.ToString() ?? "No Value";
-	if (metric is NumericMetric num)
-	{
-		double? numValue = num.Value;
-		if (numValue.HasValue)
-		{
-			value = numValue.Value.ToString("F1");
-		}
-		else
-		{
-			value = "No value";
-		}
-	}
-	table.AddRow(kvp.Key, value, reason);
-}
-console.Write(table);
+console.DisplayEvaluationResultsTable(evalResult);
